@@ -89,10 +89,10 @@ public class JsDocumentTest {
     Object o = evalObject("txt.data", "txt", txt);
     Assert.assertEquals(o, "contents");
     //
-    o = eval("txt.length", "txt", txt);
+    o = evalObject("txt.length", "txt", txt);
     Assert.assertEquals(o, "contents".length());
     //
-    o = eval("txt.isElementContentWhitespace", "txt", txt);
+    o = evalObject("txt.isElementContentWhitespace", "txt", txt);
     Assert.assertEquals(o, Boolean.FALSE);
   }
 
@@ -101,16 +101,16 @@ public class JsDocumentTest {
     Object o = evalObject("attr.name", "attr", new JsAttr("k", "v"));
     Assert.assertEquals(o, "k");
     //
-    o = eval("attr.nodeType", "attr", new JsAttr("k", "v"));
+    o = evalObject("attr.nodeType", "attr", new JsAttr("k", "v"));
     Assert.assertEquals(o, 2);
     //
-    o = eval("attr.nodeValue", "attr", new JsAttr("k", "v"));
+    o = evalObject("attr.nodeValue", "attr", new JsAttr("k", "v"));
     Assert.assertEquals(o, "v");
     //
-    o = eval("attr.isId", "attr", new JsAttr("k", "v"));
+    o = evalObject("attr.isId", "attr", new JsAttr("k", "v"));
     Assert.assertEquals(o, Boolean.FALSE);
     //
-    o = eval("attr.isId", "attr", new JsAttr("id", "v"));
+    o = evalObject("attr.isId", "attr", new JsAttr("id", "v"));
     Assert.assertEquals(o, Boolean.TRUE);
   }
 
@@ -119,6 +119,7 @@ public class JsDocumentTest {
     Bindings b = engine.getBindings(ScriptContext.ENGINE_SCOPE);
     b.put(bindKey, bindValue);
     String js = "var DocType = Java.type(\"com.flow.js.jdom.JsDocument\");\n" + script;
+    System.out.println("\neval:" + js);
     engine.eval(js);
     return b;
   }
@@ -130,6 +131,7 @@ public class JsDocumentTest {
     String js = String.format(//
         "var DocType = Java.type(\"com.flow.js.jdom.JsDocument\");\n" //
             + "var obj = %s;", script);
+    System.out.println("\neval:" + js);
     engine.eval(js);
     return b.get("obj");
   }

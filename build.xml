@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="nashorn-dom" default="jar" basedir=".">
+  <!-- ============== PATHS ======================= -->
+  <path id="classpath">
+    <pathelement location="/target/classes" />
+    <fileset dir="lib">
+      <include name="**/*.jar" />
+    </fileset>
+  </path>
+  <!-- ============== TASKDEFS ====================== -->
+  <taskdef name="junit"
+  classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask" />
+  <!-- ============== TARGETS ====================== -->
+  <target name="setup">
+    <mkdir dir="target/classes" />
+  </target>
+  <target name="clean" description="clean all generated resources" >
+    <delete includeEmptyDirs="true" quiet="false" verbose="false">
+      <fileset dir="target" includes="**/*" />
+    </delete>
+  </target>
+  <target name="compile" description="compile" depends="clean,setup">
+    <javac deprecation="off" verbose="no" debug="on" srcdir="src"
+           destdir="target/classes" includeantruntime="false">
+      <classpath refid="classpath" />
+    </javac>
+  </target>
+  <target name="jar" description="jar" depends="compile">
+    <jar destfile="target/nashorn-dom.jar" basedir="target/classes" />
+  </target>
+  <target name="junit" description="run unittests" depends="jar">
+    <javac deprecation="off" verbose="no" debug="on" srcdir="test"
+           destdir="target/classes" includeantruntime="false">
+      <classpath refid="classpath" />
+    </javac>
+    <junit printsummary="yes" haltonfailure="no" fork="no"
+           showoutput="yes">
+      <classpath>
+	<pathelement id="${classpath}" />
+	<pathelement location="target/classes" />
+      </classpath>
+      <test name="com.flow.js.jdom.JsDocumentTest" />
+    </junit>
+  </target>
+</project>
