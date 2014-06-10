@@ -1,4 +1,8 @@
 nashorn-jdom
 ============
 
-mimic a js dom using jdom
+Mimic a js dom using jdom.
+
+This is very preliminary. In particular there is no support for
+namespaces and testing is (so far) minimal.
+
