@@ -1,5 +1,7 @@
 package com.flow.js.jdom;
 
+import org.jdom2.Attribute;
+
 public class JsAttr extends AbstractJsObject {
   public final String name;
   public final String nodeValue;
@@ -8,6 +10,10 @@ public class JsAttr extends AbstractJsObject {
     super("Attr");
     this.name = name;
     this.nodeValue = value;
+  }
+
+  public JsAttr(Attribute attr) {
+    this(attr.getName(), attr.getValue());
   }
 
   @Override

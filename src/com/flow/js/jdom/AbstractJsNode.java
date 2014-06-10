@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 
 import jdk.nashorn.api.scripting.JSObject;
 
+import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.w3c.dom.Document;
 
@@ -21,9 +22,7 @@ public abstract class AbstractJsNode extends AbstractJsObject {
   }
 
   public static AbstractJsNode fromElement(Element element) {
-    
-     
-    return element.getChildren().size()>0? new JsNode(element, "Node") : new JsTextNode(element);
+    return element.getChildren().size() > 0 ? new JsNode(element, "Node") : new JsTextNode(element);
   }
 
   // ---------------------------
@@ -46,6 +45,8 @@ public abstract class AbstractJsNode extends AbstractJsObject {
         return baseURI();
       case "textContent":
         return textContent();
+      case "getAttribute":
+        return new GetAttribute();
       case "hasAttributes":
         return new HasAttributes();
       case "hasChildNodes":
@@ -106,7 +107,7 @@ public abstract class AbstractJsNode extends AbstractJsObject {
   }
 
   protected String nodeName() {
-    return null;
+    return element == null ? null : element.getName();
   }
 
   protected String nodeValue() {
@@ -139,6 +140,17 @@ public abstract class AbstractJsNode extends AbstractJsObject {
     @Override
     public Object call(Object thiz, final Object... args) {
       return element != null && element.getChildren().size() > 0;
+    }
+  }
+
+  protected class GetAttribute extends JsFunction {
+    @Override
+    public Object call(Object thiz, final Object... args) {
+      if (element == null) return null;
+      String attributeName = safeStringParam(0, args);
+      Attribute at = element.getAttribute(attributeName);
+      if (at != null) return new JsAttr(at);
+      return null;
     }
   }
 

@@ -16,7 +16,7 @@ public class JsTextNode extends AbstractJsNode {
 
   @Override
   protected JsNodeList childNodes() {
-    return new JsNodeList(this);
+    return new JsNodeList(textNode);
   }
 
   @Override
